@@ -90,28 +90,5 @@ class CaloriesCalculator(Calculator):
 
 
 if __name__ == '__main__':
-    # rec = Record(amount = 500, date='15.02.2015', comment='hellow')
-    cash_calculator = CashCalculator(1000)
-    cash_calculator.add_record(Record(amount=145, comment='кофе'))
-    cash_calculator.add_record(Record(amount=300, comment='Серёге за обед'))
-    cash_calculator.add_record(Record(amount=800, comment='Серёге за обед'))
-    cash_calculator.add_record(Record(amount=3000, comment='бар в Танин др', date='03.02.2021'))
-    # rec.get_date()
-    # rec.getFullData()
-    print(cash_calculator.get_today_cash_remained('eur'))
-    # должно напечататься
-    # На сегодня осталось 555 руб 
-    print(cash_calculator.get_week_stats())
-
-    cal_calculator = CaloriesCalculator(1000)
-    cal_calculator.add_record(Record(amount=145, comment='кофе'))
-    cal_calculator.add_record(Record(amount=300, comment='Серёге за обед'))
-    # cal_calculator.add_record(Record(amount=800, comment='Серёге за обед'))
-    cal_calculator.add_record(Record(amount=3000, comment='бар в Танин др', date='03.02.2021'))
-
-    print(cal_calculator.get_calories_remained())
-    # должно напечататься
-    # На сегодня осталось 555 руб 
-    print(cal_calculator.get_week_stats())
     print('Интересно а сколько зарабатывают ревьюеры?')
     
