@@ -69,10 +69,11 @@ class CashCalculator(Calculator):
             sentence = f'На сегодня осталось {balance} {str_currency}'
         else:
             balance *= -1
-            sentence = f'Денег нет, держись: твой долг - {balance} {str_currency}'
+            sentence = f"""Денег нет, держись: 
+                твой долг - {balance} {str_currency}"""
 
         return sentence
-        
+
 
 class CaloriesCalculator(Calculator):
     def __init__(self, limit):
@@ -82,7 +83,8 @@ class CaloriesCalculator(Calculator):
         balance = self.limit - self.get_today_stats()
 
         if balance > 0:
-            sentence = f'Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {balance} кКал'
+            sentence = f"""Сегодня можно съесть что-нибудь ещё, 
+                но с общей калорийностью не более {balance} кКал"""
         else:
             sentence = 'Хватит есть!'
 
@@ -91,4 +93,3 @@ class CaloriesCalculator(Calculator):
 
 if __name__ == '__main__':
     print('Интересно а сколько зарабатывают ревьюеры?')
-    
