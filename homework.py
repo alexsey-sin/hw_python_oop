@@ -2,8 +2,8 @@ import datetime as dt
 
 
 class Record:
-    def __init__(self, amount, date='', comment=''):
-        if date == '':
+    def __init__(self, amount, date=None, comment=''):
+        if date is None:
             new_date = dt.date.today()
         else:
             new_date = dt.datetime.strptime(date, '%d.%m.%Y').date()
@@ -22,10 +22,8 @@ class Calculator:
 
     def get_today_stats(self):
         date_today = dt.date.today()
-        amount_today = 0
-        for rec in self.records:
-            if rec.date == date_today:
-                amount_today += rec.amount
+        amount_list = [r.amount for r in self.records if r.date == date_today]
+        amount_today = sum(amount_list)
         return amount_today
 
     def get_week_stats(self):
@@ -38,6 +36,10 @@ class Calculator:
                 amount_week += rec.amount
         return amount_week
 
+    def get_today_remained(self):
+        today_remained = self.limit - self.get_today_stats()
+        return today_remained
+
 
 class CashCalculator(Calculator):
     # exchange rates for 09.02.2021
@@ -48,19 +50,17 @@ class CashCalculator(Calculator):
         super().__init__(limit)
 
     def get_today_cash_remained(self, currency):
-        balance = self.limit - self.get_today_stats()
+        balance = self.get_today_remained()
+        currency_dict = {
+            'rub': ['руб', 1],
+            'usd': ['USD', self.USD_RATE],
+            'eur': ['Euro', self.EURO_RATE]}
 
-        if currency == 'rub':
-            str_currency = 'руб'
-        elif currency == 'usd':
-            str_currency = 'USD'
-            balance /= self.USD_RATE
-        elif currency == 'eur':
-            str_currency = 'Euro'
-            balance /= self.EURO_RATE
-        else:
+        if currency not in currency_dict:
             return 'Unknown currency'
 
+        str_currency = currency_dict[currency][0]
+        balance /= currency_dict[currency][1]
         balance = round(balance, 2)
 
         if balance == 0:
@@ -68,9 +68,9 @@ class CashCalculator(Calculator):
         elif balance > 0:
             sentence = f'На сегодня осталось {balance} {str_currency}'
         else:
-            balance *= -1
-            sentence = f'Денег нет, держись: \
-твой долг - {balance} {str_currency}'
+            balance = abs(balance)
+            sentence = ('Денег нет, держись: '
+                        f'твой долг - {balance} {str_currency}')
 
         return sentence
 
@@ -80,11 +80,11 @@ class CaloriesCalculator(Calculator):
         super().__init__(limit)
 
     def get_calories_remained(self):
-        balance = self.limit - self.get_today_stats()
+        balance = self.get_today_remained()
 
         if balance > 0:
-            sentence = f'Сегодня можно съесть что-нибудь ещё, \
-но с общей калорийностью не более {balance} кКал'
+            sentence = ('Сегодня можно съесть что-нибудь ещё, '
+                        f'но с общей калорийностью не более {balance} кКал')
         else:
             sentence = 'Хватит есть!'
 
@@ -92,4 +92,4 @@ class CaloriesCalculator(Calculator):
 
 
 if __name__ == '__main__':
-    print('Интересно а сколько зарабатывают ревьюеры?')
+    pass
